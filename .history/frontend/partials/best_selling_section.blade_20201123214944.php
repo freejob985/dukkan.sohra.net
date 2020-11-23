@@ -34,9 +34,9 @@
                                         </div>
                                     </div>
                                     <div class="col-8 border-left">
-                                        <div class="p-3">
+                                        <div class="p-3">{{lang_word('Online consultation')}}
                                             <h2 class="product-title mb-0 p-0 text-truncate-2">
-                                                <a href="{{ route('product', $product->slug) }}"> {{ lang($product->name,Session::get('locale')) }}</a>
+                                                <a href="{{ route('product', $product->slug) }}"> lang(1,"en"){{ __($product->name) }}</a>
                                             </h2>
                                             <div class="star-rating star-rating-sm mb-2">
                                                 {{ renderStarRating($product->rating) }}
