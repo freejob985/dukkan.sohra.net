@@ -24,10 +24,10 @@
                                     @php
                                     $product = \App\Product::find($cartItem['id']);
                                     $total = $total + $cartItem['price']*$cartItem['quantity'];
-                                    $product_name_with_choice = lang($product->name,Session::get('locale'));
+                                    $product_name_with_choice = $product->name;
                                     if ($cartItem['variant'] != null) {
-                                     
-                                        $product_name_with_choice = lang($product->name,Session::get('locale')).' - '.$cartItem['variant'];
+                                        {{ lang($product->name,Session::get('locale')) }}
+                                        $product_name_with_choice = $product->name.' - '.$cartItem['variant'];
                                     }
                                     @endphp
                                     <tr class="cart-item">

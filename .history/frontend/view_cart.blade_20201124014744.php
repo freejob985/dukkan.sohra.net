@@ -114,10 +114,7 @@
                                                 <td class="product-name">
                                                     <span class="pr-4 d-block">
                                                         {{ $product_name_with_choice }}
-                                                        {{ lang($product->name,Session::get('locale')) }}
-
-
-                                                        
+                                                    
                                                     </span>
                                                 </td>
 

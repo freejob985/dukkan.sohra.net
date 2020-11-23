@@ -113,12 +113,7 @@
 
                                                 <td class="product-name">
                                                     <span class="pr-4 d-block">
-                                                        {{ $product_name_with_choice }}
-                                                        {{ lang($product->name,Session::get('locale')) }}
-
-
-                                                        
-                                                    </span>
+                                                        {{ $product_name_with_choice }}</span>
                                                 </td>
 
                                                 <td class="product-price d-none d-lg-table-cell">
