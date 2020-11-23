@@ -112,6 +112,7 @@
                                     <td>
                                         @if ($orderDetail->product != null)
                                             <a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank">
+  
                                                 {{ lang($orderDetail->product->name,Session::get('locale')) }}
                                             </a>
                                         @else

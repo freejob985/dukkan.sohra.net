@@ -111,9 +111,7 @@
                                     <td>{{ $key+1 }}</td>
                                     <td>
                                         @if ($orderDetail->product != null)
-                                            <a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank">
-                                                {{ lang($orderDetail->product->name,Session::get('locale')) }}
-                                            </a>
+                                            <a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank">{{ $orderDetail->product->name }}</a>
                                         @else
                                             <strong>{{  translate('Product Unavailable') }}</strong>
                                         @endif

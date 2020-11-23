@@ -149,7 +149,7 @@
                                                                 <a href="{{ route('product', $orderDetail->product->slug) }}" target="_blank">
 
                                                                     {{ lang($orderDetail->id,Session::get('locale')) }}
-                                                                 
+                                                                    {{ $orderDetail->product->name }}
                                                                 </a>
                                                             @else
                                                                 <strong>{{  translate('Product Unavailable') }}</strong>
