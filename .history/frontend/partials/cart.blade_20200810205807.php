@@ -34,7 +34,7 @@
                                     <div class="dc-content">
                                         <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
                                             <a href="{{ route('product', $product->slug) }}">
-                                                {{ lang($product->name,Session::get('locale')) }}
+                                                {{ __($product->name) }}
                                             </a>
                                         </span>
 

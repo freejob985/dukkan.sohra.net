@@ -83,7 +83,7 @@
                                 <div class="media-left">
                                     <img loading="lazy"  class="img-md" src="{{ my_asset($product->thumbnail_img)}}" alt="Image">
                                 </div>
-                                <div class="media-body">{{ lang($product->name,Session::get('locale')) }}</div>
+                                <div class="media-body">{{ __($product->name) }}</div>
                             </a>
                         </td>
                         @if($type == 'Seller')

@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="pad-all text-center">
-        <form class="" action="{{ route('in_house_sale_report.index') }}" method="GET">
+        <form class="" action="{{ route('stock_report.index') }}" method="GET">
             <div class="box-inline mar-btm pad-rgt">
                  {{ translate('Sort by Category') }}:
                  <div class="select">
@@ -23,7 +23,7 @@
         <div class="panel">
             <!--Panel heading-->
             <div class="panel-heading">
-                <h3 class="panel-title">{{ translate('Product wise sale report') }}</h3>
+                <h3 class="panel-title">{{ translate('Product wise stock report') }}</h3>
             </div>
 
             <!--Panel body-->
@@ -33,14 +33,25 @@
                         <thead>
                             <tr>
                                 <th>{{ translate('Product Name') }}</th>
-                                <th>{{ translate('Num of Sale') }}</th>
+                                <th>{{ translate('Stock') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($products as $key => $product)
+                                @php
+                                    $qty = 0;
+                                    if ($product->variant_product) {
+                                        foreach ($product->stocks as $key => $stock) {
+                                            $qty += $stock->qty;
+                                        }
+                                    }
+                                    else {
+                                        $qty = $product->current_stock;
+                                    }
+                                @endphp
                                 <tr>
-                                    <td>{{ lang($product->name,Session::get('locale')) }}</td>
-                                    <td>{{ $product->num_of_sale }}</td>
+                                    <td>{{ __($product->name) }}</td>
+                                    <td>{{ $qty }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

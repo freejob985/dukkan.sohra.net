@@ -30,7 +30,7 @@
                             </div>
                             <div class="w-100 overflow--hidden">
                                 <div class="product-name text-truncate">
-                                    {{ lang($product->name,Session::get('locale')) }}
+                                    {{ __($product->name) }}
                                 </div>
                                 <div class="clearfix">
                                     <div class="price-box float-left">

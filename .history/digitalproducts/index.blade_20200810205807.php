@@ -37,7 +37,7 @@
                     @foreach($products as $key => $product)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td><a href="{{ route('product', $product->slug) }}" target="_blank">{{ lang($product->name,Session::get('locale')) }}</a></td>
+                            <td><a href="{{ route('product', $product->slug) }}" target="_blank">{{ __($product->name) }}</a></td>
                             <td>{{ ucfirst($product->added_by) }}</td>
                             <td><img class="img-md" src="{{ my_asset($product->thumbnail_img)}}" alt="Image"></td>
                             <td>{{ number_format($product->unit_price,2) }}</td>

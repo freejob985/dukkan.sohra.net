@@ -29,7 +29,7 @@
                                 <img loading="lazy"  class="img-md" src="{{ my_asset($product->thumbnail_img)}}" alt="Image">
                                 </div>
                                 <div class="col-sm-9">
-                				<label for="" class="control-label">{{ lang($product->name,Session::get('locale')) }}</label>
+                				<label for="" class="control-label">{{ __($product->name) }}</label>
                                 </div>
                 			</td>
                             <td>

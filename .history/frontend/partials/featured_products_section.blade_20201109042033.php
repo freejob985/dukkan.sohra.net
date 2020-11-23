@@ -15,7 +15,7 @@
 
                                 <div class="card-image">
                                     <a href="{{ route('product', $product->slug) }}" class="d-block">
-                                        <img class="img-fit lazyload mx-auto" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($product->thumbnail_img) }}" alt="{{ lang($product->name,Session::get('locale')) }}">
+                                        <img class="img-fit lazyload mx-auto" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($product->thumbnail_img) }}" alt="{{ __($product->name) }}">
                                     </a>
                                 </div>
 
@@ -47,7 +47,7 @@
                                         {{ renderStarRating($product->rating) }}
                                     </div>
                                     <h2 class="product-title p-0">
-                                        <a href="{{ route('product', $product->slug) }}" class="text-truncate">{{ lang($product->name,Session::get('locale')) }}</a>
+                                        <a href="{{ route('product', $product->slug) }}" class="text-truncate">{{ __($product->name) }}</a>
                                     </h2>
 
                                     @if (\App\Addon::where('unique_identifier', 'club_point')->first() != null && \App\Addon::where('unique_identifier', 'club_point')->first()->activated)

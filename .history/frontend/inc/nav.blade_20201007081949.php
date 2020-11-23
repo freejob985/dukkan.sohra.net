@@ -568,13 +568,13 @@
                                                                         <div class="d-flex align-items-center">
                                                                             <div class="dc-image">
                                                                                 <a href="{{ route('product', $product->slug) }}">
-                                                                                    <img src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($product->thumbnail_img) }}" class="img-fluid lazyload" alt="{{ lang($product->name,Session::get('locale')) }}">
+                                                                                    <img src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($product->thumbnail_img) }}" class="img-fluid lazyload" alt="{{ __($product->name) }}">
                                                                                 </a>
                                                                             </div>
                                                                             <div class="dc-content">
                                                                                 <span class="d-block dc-product-name text-capitalize strong-600 mb-1">
                                                                                     <a href="{{ route('product', $product->slug) }}">
-                                                                                        {{ lang($product->name,Session::get('locale')) }}
+                                                                                        {{ __($product->name) }}
                                                                                     </a>
                                                                                 </span>
 

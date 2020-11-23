@@ -18,7 +18,7 @@
                                 <div class="product-box-2 bg-white alt-box my-2">
                                     <div class="position-relative overflow-hidden">
                                         <a href="{{ route('product', $product->slug) }}" class="d-block product-image h-100 text-center">
-                                            <img class="img-fit lazyload" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($product->thumbnail_img) }}" alt="{{ lang($product->name,Session::get('locale')) }}">
+                                            <img class="img-fit lazyload" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($product->thumbnail_img) }}" alt="{{ __($product->name) }}">
                                         </a>
                                         <div class="product-btns clearfix">
                                             <button class="btn add-wishlist" title="Add to Wishlist" onclick="addToWishList({{ $product->id }})" tabindex="0">
@@ -44,7 +44,7 @@
                                             {{ renderStarRating($product->rating) }}
                                         </div>
                                         <h2 class="product-title p-0">
-                                            <a href="{{ route('product', $product->slug) }}" class=" text-truncate">{{ lang($product->name,Session::get('locale')) }}</a>
+                                            <a href="{{ route('product', $product->slug) }}" class=" text-truncate">{{ __($product->name) }}</a>
 
                                         </h2>
                                         @if (\App\Addon::where('unique_identifier', 'club_point')->first() != null && \App\Addon::where('unique_identifier', 'club_point')->first()->activated)

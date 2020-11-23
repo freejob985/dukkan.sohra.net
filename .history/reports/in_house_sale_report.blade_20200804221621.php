@@ -39,7 +39,7 @@
                         <tbody>
                             @foreach ($products as $key => $product)
                                 <tr>
-                                    <td>{{ lang($product->name,Session::get('locale')) }}</td>
+                                    <td>{{ __($product->name) }}</td>
                                     <td>{{ $product->num_of_sale }}</td>
                                 </tr>
                             @endforeach

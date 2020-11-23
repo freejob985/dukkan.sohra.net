@@ -10,7 +10,7 @@
             </div>
             <div class="block-body">
                 <h6 class="strong-600">
-                    {{ lang($product->name,Session::get('locale')) }}
+                    {{ __($product->name) }}
                 </h6>
                 <div class="row align-items-center no-gutters mt-2 mb-2">
                     <div class="col-sm-2">

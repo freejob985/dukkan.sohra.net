@@ -18,7 +18,7 @@
                                     <div class="col-4">
                                         <div class="position-relative overflow-hidden h-100">
                                             <a href="{{ route('product', $product->slug) }}" class="d-block product-image h-100">
-                                                <img class="img-fit lazyload mx-auto" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($product->thumbnail_img) }}" alt="{{ __($product->name) }}">
+                                                <img class="img-fit lazyload mx-auto" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($product->thumbnail_img) }}" alt="{{ lang($product->name,Session::get('locale')) }}">
                                             </a>
                                             <div class="product-btns">
                                                 <button class="btn add-wishlist" title="Add to Wishlist" onclick="addToWishList({{ $product->id }})">

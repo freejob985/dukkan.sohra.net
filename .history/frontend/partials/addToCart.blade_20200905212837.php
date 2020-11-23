@@ -31,7 +31,7 @@
             <div class="product-description-wrapper">
                 <!-- Product title -->
                 <h2 class="product-title">
-                    {{ lang($product->name,Session::get('locale')) }}
+                    {{ __($product->name) }}
                 </h2>
 
                 @if(home_price($product->id) != home_discounted_price($product->id))
