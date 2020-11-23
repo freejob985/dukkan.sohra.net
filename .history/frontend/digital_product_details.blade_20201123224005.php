@@ -24,14 +24,12 @@
 
     <!-- Open Graph data -->
     <meta property="og:title" content="{{ $detailedProduct->meta_title }}" />
-    <meta property="og:type" content="og:product" />
+    <meta property="og:type" content="product" />
     <meta property="og:url" content="{{ route('product', $detailedProduct->slug) }}" />
     <meta property="og:image" content="{{ my_asset($detailedProduct->meta_img) }}" />
     <meta property="og:description" content="{{ $detailedProduct->meta_description }}" />
     <meta property="og:site_name" content="{{ env('APP_NAME') }}" />
     <meta property="og:price:amount" content="{{ single_price($detailedProduct->unit_price) }}" />
-    <meta property="product:price:currency" content="{{ \App\Currency::findOrFail(\App\BusinessSetting::where('type', 'system_default_currency')->first()->value)->code }}" />
-    <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}">
 @endsection
 
 @section('content')
@@ -67,10 +65,10 @@
                         <div class="product-description-wrapper">
                             <!-- Product title -->
                             <h1 class="product-title mb-2">
-                              
+                                {{  translate($detailedProduct->name) }}
 
 
-                                {{ lang($detailedProduct->name,Session::get('locale')) }}
+                                
                             </h1>
 
                             <div class="row align-items-center my-1">
@@ -100,15 +98,9 @@
                                                 $qty = $detailedProduct->current_stock;
                                             }
                                         @endphp
-                                        @if ($qty > 0)
-                                            <li>
-                                                <span class="badge badge-md badge-pill bg-green">{{ translate('In stock')}}</span>
-                                            </li>
-                                        @else
-                                            <li>
-                                                <span class="badge badge-md badge-pill bg-red">{{ translate('Out of stock')}}</span>
-                                            </li>
-                                        @endif
+                                        <li>
+                                            <span class="badge badge-md badge-pill bg-green">{{ translate('In stock')}}</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -130,12 +122,6 @@
                                         <button class="btn btn-secondary" onclick="show_chat_modal()">{{ translate('Message Seller')}}</button>
                                     </div>
                                 @endif
-
-                                @if ($detailedProduct->brand != null)
-                                    <div class="col-auto">
-                                        <img src="{{ my_asset($detailedProduct->brand->logo) }}" alt="{{ $detailedProduct->brand->name }}" height="30">
-                                    </div>
-                                @endif
                             </div>
 
                             <hr>
@@ -150,7 +136,7 @@
                                         <div class="product-price-old">
                                             <del>
                                                 {{ home_price($detailedProduct->id) }}
-                                                @if($detailedProduct->unit != null)
+                                                @if($detailedProduct->unit != null || $detailedProduct->unit != '')
                                                     <span>/{{ $detailedProduct->unit }}</span>
                                                 @endif
                                             </del>
@@ -167,9 +153,10 @@
                                             <strong>
                                                 {{ home_discounted_price($detailedProduct->id) }}
                                             </strong>
-                                            @if($detailedProduct->unit != null)
+                                            @if($detailedProduct->unit != null || $detailedProduct->unit != '')
                                                 <span class="piece">/{{ $detailedProduct->unit }}</span>
                                             @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -183,7 +170,9 @@
                                             <strong>
                                                 {{ home_discounted_price($detailedProduct->id) }}
                                             </strong>
-                                            <span class="piece">/{{ $detailedProduct->unit }}</span>
+                                            @if($detailedProduct->unit != null || $detailedProduct->unit != '')
+                                                <span class="piece">/{{ $detailedProduct->unit }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -208,75 +197,6 @@
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $detailedProduct->id }}">
 
-                                @if ($detailedProduct->choice_options != null)
-                                    @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
-
-                                    <div class="row no-gutters">
-                                        <div class="col-2">
-                                            <div class="product-description-label mt-2 ">{{ \App\Attribute::find($choice->attribute_id)->name }}:</div>
-                                        </div>
-                                        <div class="col-10">
-                                            <ul class="list-inline checkbox-alphanumeric checkbox-alphanumeric--style-1 mb-2">
-                                                @foreach ($choice->values as $key => $value)
-                                                    <li>
-                                                        <input type="radio" id="{{ $choice->attribute_id }}-{{ $value }}" name="attribute_id_{{ $choice->attribute_id }}" value="{{ $value }}" @if($key == 0) checked @endif>
-                                                        <label for="{{ $choice->attribute_id }}-{{ $value }}">{{ $value }}</label>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    @endforeach
-                                @endif
-
-                                @if (count(json_decode($detailedProduct->colors)) > 0)
-                                    <div class="row no-gutters">
-                                        <div class="col-2">
-                                            <div class="product-description-label mt-2">{{ translate('Color')}}:</div>
-                                        </div>
-                                        <div class="col-10">
-                                            <ul class="list-inline checkbox-color mb-1">
-                                                @foreach (json_decode($detailedProduct->colors) as $key => $color)
-                                                    <li>
-                                                        <input type="radio" id="{{ $detailedProduct->id }}-color-{{ $key }}" name="color" value="{{ $color }}" @if($key == 0) checked @endif>
-                                                        <label style="background: {{ $color }};" for="{{ $detailedProduct->id }}-color-{{ $key }}" data-toggle="tooltip"></label>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <hr>
-                                @endif
-
-                                <!-- Quantity + Add to cart -->
-                                <div class="row no-gutters">
-                                    <div class="col-2">
-                                        <div class="product-description-label mt-2">{{ translate('Quantity')}}:</div>
-                                    </div>
-                                    <div class="col-10">
-                                        <div class="product-quantity d-flex align-items-center">
-                                            <div class="input-group input-group--style-2 pr-3" style="width: 160px;">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-number" type="button" data-type="minus" data-field="quantity" disabled="disabled">
-                                                        <i class="la la-minus"></i>
-                                                    </button>
-                                                </span>
-                                                <input type="text" name="quantity" class="form-control h-auto input-number text-center" placeholder="1" value="1" min="1" max="10">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-number" type="button" data-type="plus" data-field="quantity">
-                                                        <i class="la la-plus"></i>
-                                                    </button>
-                                                </span>
-                                            </div>
-                                            <div class="avialable-amount">(<span id="available-quantity">{{ $qty }}</span> {{ translate('available')}})</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr>
-
                                 <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
                                     <div class="col-2">
                                         <div class="product-description-label">{{ translate('Total Price')}}:</div>
@@ -295,19 +215,13 @@
                             <div class="d-table width-100 mt-3">
                                 <div class="d-table-cell">
                                     <!-- Buy Now button -->
-                                    @if ($qty > 0)
-                                        <button type="button" class="btn btn-styled btn-base-1 btn-icon-left strong-700 hov-bounce hov-shaddow buy-now" onclick="buyNow()">
-                                            <i class="la la-shopping-cart"></i> {{ translate('Buy Now')}}
-                                        </button>
-                                        <button type="button" class="btn btn-styled btn-alt-base-1 c-white btn-icon-left strong-700 hov-bounce hov-shaddow ml-2 add-to-cart" onclick="addToCart()">
-                                            <i class="la la-shopping-cart"></i>
-                                            <span class="d-none d-md-inline-block"> {{ translate('Add to cart')}}</span>
-                                        </button>
-                                    @else
-                                        <button type="button" class="btn btn-styled btn-base-3 btn-icon-left strong-700" disabled>
-                                            <i class="la la-cart-arrow-down"></i> {{ translate('Out of Stock')}}
-                                        </button>
-                                    @endif
+                                    <button type="button" class="btn btn-styled btn-base-1 btn-icon-left strong-700 hov-bounce hov-shaddow buy-now" onclick="buyNow()">
+                                        <i class="la la-shopping-cart"></i> {{ translate('Buy Now')}}
+                                    </button>
+                                    <button type="button" class="btn btn-styled btn-alt-base-1 c-white btn-icon-left strong-700 hov-bounce hov-shaddow ml-2 add-to-cart" onclick="addToCart()">
+                                        <i class="la la-shopping-cart"></i>
+                                        <span class="d-none d-md-inline-block"> {{ translate('Add to cart')}}</span>
+                                    </button>
                                 </div>
                             </div>
 
@@ -348,7 +262,7 @@
                                 $refund_request_addon = \App\Addon::where('unique_identifier', 'refund_request')->first();
                                 $refund_sticker = \App\BusinessSetting::where('type', 'refund_sticker')->first();
                             @endphp
-                            @if ($refund_request_addon != null && $refund_request_addon->activated == 1 && $detailedProduct->refundable)
+                            @if ($refund_request_addon != null && $refund_request_addon->activated == 1)
                                 <div class="row no-gutters mt-3">
                                     <div class="col-2">
                                         <div class="product-description-label">{{ translate('Refund')}}:</div>
@@ -373,6 +287,43 @@
                                     </div>
                                 </div>
                             @endif
+                            <div class="row no-gutters mt-3">
+                                <div class="col-2">
+                                    <div class="product-description-label alpha-6">{{ translate('Payment')}}:</div>
+                                </div>
+                                <div class="col-10">
+                                    <ul class="inline-links">
+                                        <li>
+                                            <img src="{{ my_asset('frontend/images/placeholder.jpg') }}" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset('frontend/images/icons/cards/visa.png') }}" width="30" class="lazyload">
+                                        </li>
+                                        <li>
+                                            <img src="{{ my_asset('frontend/images/placeholder.jpg') }}" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset('frontend/images/icons/cards/mastercard.png') }}" width="30" class="lazyload">
+                                        </li>
+                                        <li>
+                                            <img src="{{ my_asset('frontend/images/placeholder.jpg') }}" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset('frontend/images/icons/cards/maestro.png') }}" width="30" class="lazyload">
+                                        </li>
+                                        <li>
+                                            <img src="{{ my_asset('frontend/images/placeholder.jpg') }}" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset('frontend/images/icons/cards/paypal.png') }}" width="30" class="lazyload">
+                                        </li>
+                                        <li>
+                                            <img src="{{ my_asset('frontend/images/placeholder.jpg') }}" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset('frontend/images/icons/cards/cod.png') }}" width="30" class="lazyload">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            {{-- <div class="row no-gutters mt-3">
+                                <div class="col-2">
+                                    <img loading="lazy"  src="{{ my_asset('frontend/images/icons/buyer-protection.png') }}" width="40" class="">
+                                </div>
+                                <div class="col-10">
+                                    <div class="heading-6 strong-700 text-info d-inline-block">Buyer protection</div><a href="" class="ml-2">View details</a>
+                                    <ul class="list-symbol--1 pl-4 mb-0 mt-2">
+                                        <li><strong>Full Refund</strong> if you don't receive your order</li>
+                                        <li><strong>Full or Partial Refund</strong>, if the item is not as described</li>
+                                    </ul>
+                                </div>
+                            </div> --}}
+                            <hr class="mt-4">
                             <div class="row no-gutters mt-4">
                                 <div class="col-2">
                                     <div class="product-description-label mt-2">{{ translate('Share')}}:</div>
@@ -491,6 +442,9 @@
                                             {{ renderStarRating($top_product->rating) }}
                                         </div>
                                         <div class="price-box">
+                                            <!-- @if(home_base_price($top_product->id) != home_discounted_base_price($top_product->id))
+                                                <del class="old-product-price strong-400">{{ home_base_price($top_product->id) }}</del>
+                                            @endif -->
                                             <span class="product-price strong-600">{{ home_discounted_base_price($top_product->id) }}</span>
                                         </div>
                                     </div>
@@ -527,7 +481,7 @@
                                     <div class="py-2 px-4">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="mw-100 overflow--hidden aiz-product-description">
+                                                <div class="mw-100 overflow--hidden">
                                                     <?php echo $detailedProduct->description; ?>
                                                 </div>
                                             </div>
@@ -564,15 +518,7 @@
                                         @foreach ($detailedProduct->reviews as $key => $review)
                                             <div class="block block-comment">
                                                 <div class="block-image">
-                                                    <img
-                                                        src="{{ my_asset('frontend/images/placeholder.jpg') }}"
-                                                        @if($review->user->avatar_original !=null)
-                                                            data-src="{{ my_asset($review->user->avatar_original) }}"
-                                                        @else
-                                                            data-src="{{ my_asset('img/avatar-place.png') }}"
-                                                        @endif
-                                                        class="rounded-circle lazyload"
-                                                        >
+                                                    <img src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($review->user->avatar_original) }}" class="rounded-circle lazyload">
                                                 </div>
                                                 <div class="block-body">
                                                     <div class="block-body-inner">
@@ -698,14 +644,14 @@
                                         <div class="col-5">
                                             <div class="position-relative overflow-hidden h-100">
                                                 <a href="{{ route('product', $related_product->slug) }}" class="d-block product-image h-100 text-center">
-                                                    <img class="img-fit lazyload" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($related_product->thumbnail_img) }}" alt="{{  __($related_product->name) }}">
+                                                    <img class="img-fit lazyload" src="{{ my_asset('frontend/images/placeholder.jpg') }}" data-src="{{ my_asset($related_product->thumbnail_img) }}" alt="{{  translate($related_product->name) }}">
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="col-7 border-left">
                                             <div class="p-3">
                                                 <h2 class="product-title mb-0 p-0 text-truncate">
-                                                    <a href="{{ route('product', $related_product->slug) }}">{{  __($related_product->name) }}</a>
+                                                    <a href="{{ route('product', $related_product->slug) }}">{{  translate($related_product->name) }}</a>
                                                 </h2>
                                                 <div class="star-rating star-rating-sm mb-2">
                                                     {{ renderStarRating($related_product->rating) }}
@@ -740,7 +686,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
             <div class="modal-content position-relative">
                 <div class="modal-header">
-                    <h5 class="modal-title strong-600 heading-5">{{ translate('Any query about this product')}}</h5>
+                    <h5 class="modal-title strong-600 heading-5">{{ translate('Any question about this product?')}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -767,7 +713,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-zoom" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-zoom" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="exampleModalLabel">{{ translate('Login')}}</h6>
@@ -776,59 +722,64 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="p-3">
-                        <form class="form-default" role="form" action="{{ route('cart.login.submit') }}" method="POST">
-                            @csrf
-                            @if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && \App\Addon::where('unique_identifier', 'otp_system')->first()->activated)
-                                <span>{{  translate('Use country code before number') }}</span>
-                            @endif
-                            <div class="form-group">
-                                @if (\App\Addon::where('unique_identifier', 'otp_system')->first() != null && \App\Addon::where('unique_identifier', 'otp_system')->first()->activated)
-                                    <input type="text" class="form-control h-auto form-control-lg {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ translate('Email Or Phone')}}" name="email" id="email">
-                                @else
-                                    <input type="email" class="form-control h-auto form-control-lg {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{  translate('Email') }}" name="email">
-                                @endif
-                            </div>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body px-4">
+                                    <form class="form-default" role="form" action="{{ route('cart.login.submit') }}" method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <div class="input-group input-group--style-1">
+                                                <input type="email" name="email" class="form-control" placeholder="{{ translate('Email')}}">
+                                                <span class="input-group-addon">
+                                                    <i class="text-md ion-person"></i>
+                                                </span>
+                                            </div>
+                                        </div>
 
-                            <div class="form-group">
-                                <input type="password" name="password" class="form-control form-control-lg h-auto" placeholder="{{ translate('Password')}}">
-                            </div>
+                                        <div class="form-group">
+                                            <div class="input-group input-group--style-1">
+                                                <input type="password" name="password" class="form-control" placeholder="{{ translate('Password')}}">
+                                                <span class="input-group-addon">
+                                                    <i class="text-md ion-locked"></i>
+                                                </span>
+                                            </div>
+                                        </div>
 
-                            <div class="row align-items-center">
-                                <div class="col-md-6">
-                                    <a href="#" class="link link-xs link--style-3">{{ translate('Forgot password?')}}</a>
+                                        <div class="row align-items-center">
+                                            <div class="col-md-6">
+                                                <a href="#" class="link link-xs link--style-3">{{ translate('Forgot password?')}}</a>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <button type="submit" class="btn btn-styled btn-base-1 px-4">{{ translate('Sign in')}}</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
                                 </div>
-                                <div class="col-md-6 text-right">
-                                    <button type="submit" class="btn btn-styled btn-base-1 px-4">{{ translate('Sign in')}}</button>
-                                </div>
                             </div>
-                        </form>
-
-                        <div class="text-center pt-3">
-                            <p class="text-md">
-                                {{ translate('Need an account?')}} <a href="{{ route('user.registration') }}" class="strong-600">{{ translate('Register Now')}}</a>
-                            </p>
                         </div>
-                        @if(\App\BusinessSetting::where('type', 'google_login')->first()->value == 1 || \App\BusinessSetting::where('type', 'facebook_login')->first()->value == 1 || \App\BusinessSetting::where('type', 'twitter_login')->first()->value == 1)
-                            <div class="or or--1 my-3 text-center">
-                                <span>{{ translate('or')}}</span>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body px-4">
+                                    @if(\App\BusinessSetting::where('type', 'google_login')->first()->value == 1)
+                                        <a href="{{ route('social.login', ['provider' => 'google']) }}" class="btn btn-styled btn-block btn-google btn-icon--2 btn-icon-left px-4 my-4">
+                                            <i class="icon fa fa-google"></i> {{ translate('Login with Google')}}
+                                        </a>
+                                    @endif
+                                    @if (\App\BusinessSetting::where('type', 'facebook_login')->first()->value == 1)
+                                        <a href="{{ route('social.login', ['provider' => 'facebook']) }}" class="btn btn-styled btn-block btn-facebook btn-icon--2 btn-icon-left px-4 my-4">
+                                            <i class="icon fa fa-facebook"></i> {{ translate('Login with Facebook')}}
+                                        </a>
+                                    @endif
+                                    @if (\App\BusinessSetting::where('type', 'twitter_login')->first()->value == 1)
+                                    <a href="{{ route('social.login', ['provider' => 'twitter']) }}" class="btn btn-styled btn-block btn-twitter btn-icon--2 btn-icon-left px-4 my-4">
+                                        <i class="icon fa fa-twitter"></i> {{ translate('Login with Twitter')}}
+                                    </a>
+                                    @endif
+                                </div>
                             </div>
-                            @if(\App\BusinessSetting::where('type', 'google_login')->first()->value == 1)
-                                <a href="{{ route('social.login', ['provider' => 'google']) }}" class="btn btn-styled btn-block btn-google btn-icon--2 btn-icon-left px-4 mb-3">
-                                    <i class="icon fa fa-google"></i> {{ translate('Login with Google')}}
-                                </a>
-                            @endif
-                            @if (\App\BusinessSetting::where('type', 'facebook_login')->first()->value == 1)
-                                <a href="{{ route('social.login', ['provider' => 'facebook']) }}" class="btn btn-styled btn-block btn-facebook btn-icon--2 btn-icon-left px-4 mb-3">
-                                    <i class="icon fa fa-facebook"></i> {{ translate('Login with Facebook')}}
-                                </a>
-                            @endif
-                            @if (\App\BusinessSetting::where('type', 'twitter_login')->first()->value == 1)
-                            <a href="{{ route('social.login', ['provider' => 'twitter']) }}" class="btn btn-styled btn-block btn-twitter btn-icon--2 btn-icon-left px-4 mb-3">
-                                <i class="icon fa fa-twitter"></i> {{ translate('Login with Twitter')}}
-                            </a>
-                            @endif
-                        @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -840,12 +791,11 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function() {
-    		$('#share').jsSocials({
+    		$('#share').share({
     			showLabel: false,
                 showCount: false,
                 shares: ["email", "twitter", "facebook", "linkedin", "pinterest", "stumbleupon", "whatsapp"]
     		});
-            getVariantPrice();
     	});
 
         function CopyToClipboard(containerid) {

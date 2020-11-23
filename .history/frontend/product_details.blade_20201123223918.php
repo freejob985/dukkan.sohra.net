@@ -67,10 +67,11 @@
                         <div class="product-description-wrapper">
                             <!-- Product title -->
                             <h1 class="product-title mb-2">
-                              
+                                {{  __($detailedProduct->name) }}
 
 
-                                {{ lang($detailedProduct->name,Session::get('locale')) }}
+                                @php $trans = App\ProductTranslation::where([['locale', Session::get('locale')], ['product_id',$orderDetail->product->id]])->first();  @endphp
+                                @isset($trans) {{ $trans->name }}  @else  لا يوجد ترجمه  @endiss
                             </h1>
 
                             <div class="row align-items-center my-1">

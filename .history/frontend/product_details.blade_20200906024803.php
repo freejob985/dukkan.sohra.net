@@ -67,10 +67,7 @@
                         <div class="product-description-wrapper">
                             <!-- Product title -->
                             <h1 class="product-title mb-2">
-                              
-
-
-                                {{ lang($detailedProduct->name,Session::get('locale')) }}
+                                {{  __($detailedProduct->name) }}
                             </h1>
 
                             <div class="row align-items-center my-1">
