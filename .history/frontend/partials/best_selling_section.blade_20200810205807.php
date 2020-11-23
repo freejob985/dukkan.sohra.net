@@ -36,7 +36,7 @@
                                     <div class="col-8 border-left">
                                         <div class="p-3">
                                             <h2 class="product-title mb-0 p-0 text-truncate-2">
-                                                <a href="{{ route('product', $product->slug) }}">111s{{ __($product->name) }}</a>
+                                                <a href="{{ route('product', $product->slug) }}">{{ __($product->name) }}</a>
                                             </h2>
                                             <div class="star-rating star-rating-sm mb-2">
                                                 {{ renderStarRating($product->rating) }}
