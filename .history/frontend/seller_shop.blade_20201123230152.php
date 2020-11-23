@@ -175,7 +175,7 @@
                                                     </div>
                                                     <h2 class="product-title p-0 text-truncate-2">
                                                         <a href="{{ route('product', $product->slug) }}">
-                                                          
+                                                            {{  __($product->name) }}
                                                             {{ lang($product->name,Session::get('locale')) }}
                                                         </a>
                                                     </h2>

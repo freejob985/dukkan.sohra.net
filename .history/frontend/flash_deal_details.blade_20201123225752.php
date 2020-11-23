@@ -38,8 +38,9 @@
                                             </div>
                                             <h2 class="product-title p-0 mt-2">
                                                 <a href="{{ route('product', $product->slug) }}" class="text-truncate">
-                                                   
-                                                    {{ lang($product->name,Session::get('locale')) }}
+                                                    {{  __($product->name) }}
+                                                    @php $trans = App\ProductTranslation::where([['locale', Session::get('locale')], ['product_id',$orderDetail->product->id]])->first();  @endphp
+                                                    @isset($trans) {{ $trans->name }}  @else  لا يوجد ترجمه  @endiss
                                                 </a>
                                             </h2>
                                         </div>

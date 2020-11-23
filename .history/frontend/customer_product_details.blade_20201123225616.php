@@ -222,8 +222,8 @@
                                         </div>
                                         <h2 class="product-title p-0 text-truncate-2">
                                             <a href="{{ route('customer.product', $product->slug) }}">
-                                               
-                                                {{ lang($product->name,Session::get('locale')) }}
+                                                {{  __($product->name) }}
+                                            
                                             </a>
                                         </h2>
                                     </div>

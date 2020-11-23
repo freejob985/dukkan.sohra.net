@@ -334,10 +334,9 @@
                                                 </div>
                                                 <h2 class="product-title p-0">
                                                     <a href="{{ route('product', $product->slug) }}" class=" text-truncate">
+                                                        {{  __($product->name) }}
                                                     
-                                                    
-                                                        {{ lang($product->name,Session::get('locale')) }}
-                                                    </a>
+                                                        {{ lang($product->name,Session::get('locale')) }}</a>
                                                 </h2>
                                                 @if (\App\Addon::where('unique_identifier', 'club_point')->first() != null && \App\Addon::where('unique_identifier', 'club_point')->first()->activated)
                                                     <div class="club-point mt-2 bg-soft-base-1 border-light-base-1 border">

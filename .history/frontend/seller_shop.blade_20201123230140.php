@@ -175,9 +175,7 @@
                                                     </div>
                                                     <h2 class="product-title p-0 text-truncate-2">
                                                         <a href="{{ route('product', $product->slug) }}">
-                                                          
-                                                            {{ lang($product->name,Session::get('locale')) }}
-                                                        </a>
+                                                            {{  __($product->name) }}</a>
                                                     </h2>
                                                     @if (\App\Addon::where('unique_identifier', 'club_point')->first() != null && \App\Addon::where('unique_identifier', 'club_point')->first()->activated)
                                                         <div class="club-point mt-2 bg-soft-base-1 border-light-base-1 border">

@@ -37,10 +37,7 @@
                                                 <span class="product-price strong-600">{{ home_discounted_base_price($product->id) }}</span>
                                             </div>
                                             <h2 class="product-title p-0 mt-2">
-                                                <a href="{{ route('product', $product->slug) }}" class="text-truncate">
-                                                   
-                                                    {{ lang($product->name,Session::get('locale')) }}
-                                                </a>
+                                                <a href="{{ route('product', $product->slug) }}" class="text-truncate">{{  __($product->name) }}</a>
                                             </h2>
                                         </div>
                                     </div>
