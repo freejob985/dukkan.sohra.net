@@ -237,8 +237,8 @@
                                     @endif
                                     <h2 class="title text-truncate-2 mb-0">
                                         <a href="{{ route('product', $product->slug) }}">
-                          
-                                            {{ lang($product->name,Session::get('locale')) }}
+                                            {{  __($product->name) }}
+                                        
                                         </a>
                                     </h2>
                                 </div>

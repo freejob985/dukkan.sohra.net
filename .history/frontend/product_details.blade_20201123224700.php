@@ -485,8 +485,9 @@
                                     </div>
                                     <div class="product-details float-left">
                                         <h4 class="title text-truncate">
-                                            <a href="{{ route('product', $top_product->slug) }}" class="d-block">
-                                                {{ lang($top_product->name,Session::get('locale')) }}
+                                            <a href="{{ route('product', $top_product->slug) }}" class="d-block">{{ $top_product->name }}
+
+                                                
                                             </a>
                                         </h4>
                                         <div class="star-rating star-rating-sm mt-1">

@@ -486,6 +486,7 @@
                                     <div class="product-details float-left">
                                         <h4 class="title text-truncate">
                                             <a href="{{ route('product', $top_product->slug) }}" class="d-block">
+
                                                 {{ lang($top_product->name,Session::get('locale')) }}
                                             </a>
                                         </h4>
