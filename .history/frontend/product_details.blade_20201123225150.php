@@ -530,7 +530,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="mw-100 overflow--hidden aiz-product-description">
-                                                   
+                                                    <?php echo $detailedProduct->description; ?>
                                                     {{ lang($detailedProduct->id,Session::get('locale'),1) }}
 
                                                 </div>

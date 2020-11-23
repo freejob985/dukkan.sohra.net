@@ -530,8 +530,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="mw-100 overflow--hidden aiz-product-description">
-                                                   
-                                                    {{ lang($detailedProduct->id,Session::get('locale'),1) }}
+                                                    <?php echo $detailedProduct->description; ?>
+                                                    {{ lang($product->name,Session::get('locale')) }}
 
                                                 </div>
                                             </div>
