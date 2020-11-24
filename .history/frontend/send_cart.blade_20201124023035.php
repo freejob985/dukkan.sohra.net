@@ -36,9 +36,7 @@
                                             class="btn btn-styled btn-base-1">{{ translate('Whats App')}}</a>
                                     </div>
 
-                                    <div class="col-md-4" style="
-                                    display: none;
-                                ">
+                                    <div class="col-md-4" >
 
                                         <a href="" class="btn btn-styled btn-base-1">{{ translate('SMS')}}</a>
                                     </div>
