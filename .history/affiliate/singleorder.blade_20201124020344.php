@@ -118,7 +118,7 @@
 
                                                 <tr>
                                                     <th>{{ $index + 1  }}</th>
-                                                    <th>
+                                                    <th>{{ }}
 
                                                         {{ lang($product->product->name,Session::get('locale')) }}
                                                     </th>
